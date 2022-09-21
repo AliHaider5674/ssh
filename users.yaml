@@ -1,0 +1,30 @@
+- hosts: "localhost"
+  connection: "local"
+  vars:
+    ssh_key_filename: id_rsa_myproject
+  tasks:
+  - name: "Create user accounts"
+    user:
+      name: "ali"
+      groups: "admin"
+  - name: "Allow admin users to sudo without a password"
+    lineinfile:
+      dest: "/etc/sudoers" # path: in version 2.3
+      state: "present"
+      regexp: "^%admin"
+      line: "%admin ALL=(ALL) NOPASSWD: ALL"
+  - name: "generate SSH key"
+    openssh_keypair:
+      path: "~/.ssh/{{ssh_key_filename}}"
+      type: rsa
+      size: 4096
+      state: present
+      force: no
+      
+
+  # - name: "ufw add open ssh"
+  #   shell: |
+  #     ufw app list
+  #     ufw allow OpenSSH
+  #     ufw enable
+  #     ufw status
