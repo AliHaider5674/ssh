@@ -1,7 +1,7 @@
 - name: update web servers
   hosts: webservers
   become: yes
-  become_user: ali
+  remote_user: root
   vars:
     ssh_key_filename: id_rsa_myproject
   tasks:
@@ -20,15 +20,18 @@
       regexp: "^%admin"
       line: "%admin ALL=(ALL) NOPASSWD: ALL"
   - name: "SSH KeyGen command"
+    tags: run
     shell: > 
       ssh-keygen -q -b 2048 -t rsa -N "" -C "creating SSH" -f ~/.ssh/id_rsa
         creates="~/.ssh/id_rsa"
   - name: "Fetch the keyfile from one server to another"
+    tags: run 
     fetch: 
       src: "~/.ssh/id_rsa.pub"
       dest: "buffer/id_rsa.pub"
       flat: yes
   - name: "Copy the key add to authorized_keys using Ansible module"
+    tags: run
     authorized_key:
       user: ali
       state: present
