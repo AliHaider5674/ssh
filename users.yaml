@@ -1,7 +1,7 @@
 - name: update web servers
   hosts: webservers
-  become: true
-  remote_user: ali
+  become: ali
+  remote_user: root
   vars:
     ssh_key_filename: id_rsa_myproject
   tasks:
