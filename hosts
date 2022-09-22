@@ -1,2 +1,5 @@
 [webservers]
 34.211.77.77  ansible_ssh_private_key_file=../ec2key.pem   ansible_user=ec2-user
+
+[masternode]
+54.190.25.145

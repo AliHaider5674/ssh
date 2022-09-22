@@ -36,6 +36,17 @@
       user: ali
       state: present
       key: "{{ lookup('file','buffer/id_rsa.pub')}}"
+- name: update masternode servers
+  hosts: masternode
+  become: yes
+  remote_user: ec2-user
+  tasks:
+  - name: "Copy the key add to authorized_keys using Ansible module"
+    tags: run
+    authorized_key:
+      user: ali
+      state: present
+      key: "{{ lookup('file','buffer/id_rsa.pub')}}"
   # - name: "copy public SSH key"
   #   authorized_key:
   #     user: ali
