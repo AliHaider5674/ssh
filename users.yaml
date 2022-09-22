@@ -1,6 +1,6 @@
 - name: update web servers
   hosts: webservers
-  become: ali
+  become: ec2-user
   remote_user: root
   vars:
     ssh_key_filename: id_rsa_myproject
