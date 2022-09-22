@@ -19,11 +19,25 @@
       state: "present"
       regexp: "^%admin"
       line: "%admin ALL=(ALL) NOPASSWD: ALL"
-  - name: "copy public SSH key"
+  - name: "SSH KeyGen command"
+    shell: > 
+      ssh-keygen -q -b 2048 -t rsa -N "" -C "creating SSH" -f ~/.ssh/id_rsa
+        reates="~/.ssh/id_rsa"
+  - name: "Fetch the keyfile from one server to another"
+    fetch: 
+      src: "~/.ssh/id_rsa.pub"
+      dest: "buffer/id_rsa.pub"
+      flat: yes
+  - name: "Copy the key add to authorized_keys using Ansible module"
     authorized_key:
-      user: ali
+      user: ec2-user
       state: present
-      manage_dir: yes
-      key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
+      key: "{{ lookup('file','buffer/id_rsa.pub')}}"
+  # - name: "copy public SSH key"
+  #   authorized_key:
+  #     user: ali
+  #     state: present
+  #     manage_dir: yes
+  #     key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
     
       
