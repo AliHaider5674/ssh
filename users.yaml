@@ -1,7 +1,7 @@
 - name: update web servers
   hosts: webservers
   become: true
-  remote_user: root
+  remote_user: ali
   vars:
     ssh_key_filename: id_rsa_myproject
   tasks:
@@ -30,7 +30,7 @@
       flat: yes
   - name: "Copy the key add to authorized_keys using Ansible module"
     authorized_key:
-      user: ec2-user
+      user: ali
       state: present
       key: "{{ lookup('file','buffer/id_rsa.pub')}}"
   # - name: "copy public SSH key"
