@@ -1,5 +1,6 @@
 - name: update web servers
   hosts: webservers
+  become: yes
   become_user: ali
   remote_user: root
   vars:
