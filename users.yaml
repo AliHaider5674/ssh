@@ -2,7 +2,6 @@
   hosts: webservers
   become: yes
   become_user: ali
-  remote_user: root
   vars:
     ssh_key_filename: id_rsa_myproject
   tasks:
