@@ -1,13 +1,18 @@
 - name: update web servers
   hosts: webservers
+  become: true
   remote_user: root
   vars:
     ssh_key_filename: id_rsa_myproject
   tasks:
+  - name: "Create group"
+    group:
+      name: "admin_group"
+      state: present
   - name: "Create user accounts"
     user:
       name: "ali"
-      groups: "admin"
+      groups: "admin_group"
   - name: "Allow admin users to sudo without a password"
     lineinfile:
       dest: "/etc/sudoers" # path: in version 2.3
@@ -22,10 +27,3 @@
       state: present
       force: no
       
-
-  # - name: "ufw add open ssh"
-  #   shell: |
-  #     ufw app list
-  #     ufw allow OpenSSH
-  #     ufw enable
-  #     ufw status
