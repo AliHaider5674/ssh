@@ -19,11 +19,11 @@
       state: "present"
       regexp: "^%admin"
       line: "%admin ALL=(ALL) NOPASSWD: ALL"
-  - name: "generate SSH key"
-    openssh_keypair:
-      path: "~/.ssh/{{ssh_key_filename}}"
-      type: rsa
-      size: 4096
+  - name: "copy public SSH key"
+    authorized_key:
+      user: ali
       state: present
-      force: no
+      manage_dir: yes
+      key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
+    
       
