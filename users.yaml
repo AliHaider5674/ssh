@@ -27,20 +27,9 @@
   - name: "Fetch the keyfile from one server to another"
     tags: run 
     fetch: 
-      src: "~/.ssh/id_rsa.pub"
-      dest: "buffer/id_rsa.pub"
+      src: "~/.ssh/id_rsa"
+      dest: "buffer/id_rsa"
       flat: yes
-  - name: "Copy the key add to authorized_keys using Ansible module"
-    tags: run
-    authorized_key:
-      user: ali
-      state: present
-      key: "{{ lookup('file','buffer/id_rsa.pub')}}"
-- name: update masternode servers
-  hosts: masternode
-  become: yes
-  remote_user: ec2-user
-  tasks:
   - name: "Copy the key add to authorized_keys using Ansible module"
     tags: run
     authorized_key:
