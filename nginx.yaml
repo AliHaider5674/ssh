@@ -4,5 +4,5 @@
   remote_user: ec2-user
   tasks:
   - name: Installs Nginx web server
-    shell: amazon-linux-extras list | grep nginx
-  
+    shell: |
+      sudo amazon-linux-extras install nginx1
