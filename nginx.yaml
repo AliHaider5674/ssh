@@ -1,4 +1,13 @@
 - name: install nginx
+  hosts: localhost
+  become: yes
+  remote_user: ec2-user
+  tasks:
+  - name: Installs Nginx web server
+    shell: | 
+      cd cdn
+      npm run build
+- name: install nginx
   hosts: webservers
   become: yes
   remote_user: ec2-user
