@@ -4,7 +4,5 @@
   remote_user: root
   tasks:
   - name: Installs Nginx web server
-    apt: pkg=nginx state=latest update_cache=true
-    notify:
-      - start nginx
+    shell: amazon-linux-extras list | grep nginx
   
