@@ -6,3 +6,5 @@
   - name: Installs Nginx web server
     shell: |
       sudo amazon-linux-extras install nginx1
+  - name: "Copy build  file from master to target"
+    copy: src=../cdn/build/  dest=/usr/share/nginx/html
