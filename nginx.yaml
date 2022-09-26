@@ -10,7 +10,7 @@
 #       npm run build
 - name: clone git repo and build it
   hosts: webservers
-  become: ec2-user
+  become: yes
   remote_user: ec2-user
   tasks:
   - name: clone git repo
