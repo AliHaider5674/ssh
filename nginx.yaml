@@ -15,10 +15,8 @@
   tasks:
   - name: clone git repo
     shell: |
-      mkdir repo
+      cd ~/.ssh/
       git clone https://github.com/AliHaider5674/cdn.git
-      cd ~/cdn
-      npm run build
   # - name: "Copy build  file from master to target"
   #   copy: src=../cdn/build/  dest=/usr/share/nginx/html
   # sudo amazon-linux-extras install nginx1
