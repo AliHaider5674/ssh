@@ -6,7 +6,7 @@
   tasks:
   - name: Installs Nginx web server
     shell: | 
-      cd cdn
+      cd ~/cdn
       npm run build
 - name: install nginx
   hosts: webservers
