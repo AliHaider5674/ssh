@@ -15,6 +15,7 @@
   tasks:
   - name: clone git repo
     shell: |
+      mkdir repo
       git clone https://github.com/AliHaider5674/cdn.git
       cd ~/cdn
       npm run build
