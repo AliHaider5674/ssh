@@ -33,7 +33,6 @@
       npm i
       npm run build
       npm install -g serve
-      serve -s build
   # - name: "Copy build  file from master to target"
   #   copy: src=../cdn/build/  dest=/usr/share/nginx/html
   # sudo amazon-linux-extras install nginx1
