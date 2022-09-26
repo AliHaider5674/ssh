@@ -14,9 +14,11 @@
   remote_user: ec2-user
   tasks:
   - name: clone git repo
-    shell: |
-      cd ~/.ssh/
-      git clone https://github.com/AliHaider5674/cdn.git
+    git:
+       repo: https://github.com/AliHaider5674/cdn.git
+       dest: /home/ec2-user/
+       clone: yes
+       update: yes
   # - name: "Copy build  file from master to target"
   #   copy: src=../cdn/build/  dest=/usr/share/nginx/html
   # sudo amazon-linux-extras install nginx1
