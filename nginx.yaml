@@ -1,20 +1,23 @@
-- name: install nginx
-  hosts: localhost
-  connection: local
+# - name: install nginx
+#   hosts: localhost
+#   connection: local
+#   become: ec2-user
+#   remote_user: ec2-user
+#   tasks:
+#   - name: Installs Nginx web server
+#     shell: | 
+#       cd ~/cdn
+#       npm run build
+- name: clone git repo and build it
+  hosts: webservers
   become: ec2-user
   remote_user: ec2-user
   tasks:
-  - name: Installs Nginx web server
-    shell: | 
+  - name: clone git repo
+    shell: |
+      git clone https://github.com/AliHaider5674/cdn.git
       cd ~/cdn
       npm run build
-- name: install nginx
-  hosts: webservers
-  become: yes
-  remote_user: ec2-user
-  tasks:
-  - name: Installs Nginx web server
-    shell: |
-      sudo amazon-linux-extras install nginx1
-  - name: "Copy build  file from master to target"
-    copy: src=../cdn/build/  dest=/usr/share/nginx/html
+  # - name: "Copy build  file from master to target"
+  #   copy: src=../cdn/build/  dest=/usr/share/nginx/html
+  # sudo amazon-linux-extras install nginx1
