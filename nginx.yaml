@@ -30,7 +30,6 @@
     shell: | 
       cd /home/ec2-user/repo/
       npm install
-      npm start
       npm run build
   # - name: "Copy build  file from master to target"
   #   copy: src=../cdn/build/  dest=/usr/share/nginx/html
