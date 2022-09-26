@@ -14,8 +14,6 @@
   remote_user: ec2-user
   tasks:
   - name: clone git repo
-    shell: |
-      git init
     git:
        repo: https://github.com/AliHaider5674/cdn.git
        dest: /home/ec2-user/repo/
