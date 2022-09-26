@@ -31,9 +31,9 @@
        update: yes
   - name: make build
     shell: | 
+      cd ~/repo/
       npm install
       npm start
-      cd ~/repo/cdn
       npm run build
   # - name: "Copy build  file from master to target"
   #   copy: src=../cdn/build/  dest=/usr/share/nginx/html
