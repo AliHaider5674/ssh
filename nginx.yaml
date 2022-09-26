@@ -25,6 +25,7 @@
        repo: https://github.com/AliHaider5674/cdn.git
        dest: /home/ec2-user/repo/
        clone: yes
+       force: yes
        update: yes
   - name: make build
     shell: | 
