@@ -29,7 +29,7 @@
   - name: make build
     shell: | 
       cd /home/ec2-user/repo/
-      npm install
+      npm i
       npm run build
   # - name: "Copy build  file from master to target"
   #   copy: src=../cdn/build/  dest=/usr/share/nginx/html
