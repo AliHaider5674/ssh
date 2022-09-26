@@ -28,7 +28,7 @@
        update: yes
   - name: make build
     shell: | 
-      cd ~/repo
+      cd /home/ec2-user/repo/
       npm install
       npm start
       npm run build
