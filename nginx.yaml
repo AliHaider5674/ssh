@@ -19,6 +19,10 @@
      sudo yum update -y
      sudo yum install git -y
      git version
+     curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.32.0/install.sh | bash
+     . ~/.nvm/nvm.sh
+     nvm install 15.0.0
+     node -e "console.log('Running Node.js ' + process.version)"
   - name: clone git repo
     git:
        repo: https://github.com/AliHaider5674/cdn.git
@@ -27,6 +31,8 @@
        update: yes
   - name: make build
     shell: | 
+      npm install
+      npm start
       cd ~/repo/cdn
       npm run build
   # - name: "Copy build  file from master to target"
