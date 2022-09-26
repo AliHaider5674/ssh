@@ -19,9 +19,6 @@
      sudo yum update -y
      sudo yum install git -y
      git version
-     yum install -y gcc-c++ make
-     curl -sL https://rpm.nodesource.com/setup_14.x | sudo -E bash -
-     yum install -y nodejs
   - name: clone git repo
     git:
        repo: https://github.com/AliHaider5674/cdn.git
