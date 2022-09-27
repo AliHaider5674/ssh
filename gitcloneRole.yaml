@@ -5,3 +5,9 @@
     clone: yes
     orce: yes
     update: yes
+- name: make build
+  shell: | 
+    cd /home/ec2-user/repo/
+    npm i
+    npm run build
+    npm install -g serve
