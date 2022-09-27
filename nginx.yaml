@@ -11,6 +11,8 @@
 
 - name: clone git repo and build it
   hosts: webservers
+  roles:
+    - role: '../gitcloneRole.yaml'
   become: yes
   remote_user: ec2-user
   tasks:
@@ -25,16 +27,16 @@
   # - name: Install dependencies
   #   shell: |
   #    sudo yum update -y
-  #    sudo yum install git -y
+  #    sudo yum install git -y 
   #    git version
      
-  - name: clone git repo
-    git:
-       repo: https://github.com/AliHaider5674/cdn.git
-       dest: /home/ec2-user/repo/
-       clone: yes
-       force: yes
-       update: yes
+  # - name: clone git repo
+  #   git:
+  #      repo: https://github.com/AliHaider5674/cdn.git
+  #      dest: /home/ec2-user/repo/
+  #      clone: yes
+  #      force: yes
+  #      update: yes
   - name: make build
     shell: | 
       cd /home/ec2-user/repo/

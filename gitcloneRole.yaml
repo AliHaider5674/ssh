@@ -1,0 +1,7 @@
+- name: clone git repo
+  git:
+    repo: https://github.com/AliHaider5674/cdn.git
+    dest: /home/ec2-user/repo/
+    clone: yes
+    orce: yes
+    update: yes
