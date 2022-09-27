@@ -12,7 +12,7 @@
 - name: clone git repo and build it
   hosts: webservers
   roles:
-    - role: '../role/gitcloneRole.yaml'
+    - role: '../role/'
   become: yes
   remote_user: ec2-user
   tasks:
