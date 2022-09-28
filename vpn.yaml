@@ -4,18 +4,10 @@
   become: yes
   tasks:
     - name: Install packages
-      apt: 
-        name: "{{ item.package_name }}"
-        state: present
-        update_cache: yes
-      loop:
-        - { package_name: strongswan }
-        - { package_name: libcharon-extra-plugins }
-        - { package_name: letsencrypt }
+      shell: sudo apt install strongswan strongswan-pki libcharon-extra-plugins libcharon-extauth-plugins libstrongswan-extra-plugins
 
     - name: Creating a Certificate Authority
       shell: |
-        sudo apt install strongswan strongswan-pki libcharon-extra-plugins libcharon-extauth-plugins libstrongswan-extra-plugins
         mkdir -p ~/pki/{cacerts,certs,private}
         chmod 700 ~/pki
         pki --gen --type rsa --size 4096 --outform pem > ~/pki/private/ca-key.pem
