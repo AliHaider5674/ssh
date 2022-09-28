@@ -9,7 +9,6 @@
         state: present
         update_cache: yes
       loop:
-        - { package_name:  community.general }
         - { package_name: strongswan-pki }
         - { package_name: libtss2-tcti-tabrmd0 }
         - { package_name: libcharon-extra-plugins }
@@ -23,7 +22,6 @@
   
     - name: Generating a Certificate for the VPN Server
       shell: |
-        ansible-galaxy collection install community.general
         pki --gen --type rsa --size 4096 --outform pem > ~/pki/private/ca-key.pem
         pki --self --ca --lifetime 3650 --in ~/pki/private/ca-key.pem \
           --type rsa --dn "CN=VPN root CA" --outform pem > ~/pki/cacerts/ca-cert.pem
@@ -77,20 +75,20 @@
         insertbefore: BOF
     - name: restart strongswan-starter
       shell: sudo systemctl restart strongswan-starter
-    # - name: Allow everything and enable UFW
-    #   community.general.ufw:
-    #     state: enabled
-    #     policy: allow
-    # - name: Allow port range 60000-61000
-    #   community.general.ufw:
-    #     rule: allow
-    #     port: 500,4500
-    #     proto: udp
-    # - name: Configuring the Firewall & Kernel IP Forwarding
-    #   shell: |
-    #     ufw allow OpenSSH
-    #     ufw enable
-    #     ufw allow 500,4500/udp
+    - name: Allow everything and enable UFW
+      community.general.ufw:
+        state: enabled
+        policy: allow
+    - name: Allow port range 60000-61000
+      community.general.ufw:
+        rule: allow
+        port: 500,4500
+        proto: udp
+    - name: Configuring the Firewall & Kernel IP Forwarding
+      shell: |
+        ufw allow OpenSSH
+        ufw enable
+        ufw allow 500,4500/udp
     - name: Configuring before rules
       blockinfile:
         dest: /etc/ufw/before.rules
