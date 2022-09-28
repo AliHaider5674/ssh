@@ -4,9 +4,16 @@
   become: yes
   tasks:
     - name: Install packages
-      shell: |
-        sudo apt update 
-        sudo apt install strongswan strongswan-pki libcharon-extra-plugins libcharon-extauth-plugins libstrongswan-extra-plugins
+      apt: 
+        name: "{{ item.package_name }}"
+        state: present
+        update_cache: yes
+      loop:
+        - { package_name: strongswan-pki }
+        - { package_name: libcharon-extra-plugins }
+        - { package_name: letsencrypt }
+        - { package_name: libcharon-extauth-plugins }
+        - { package_name: libstrongswan-extra-plugins }
 
     - name: Creating a Certificate Authority
       shell: |
