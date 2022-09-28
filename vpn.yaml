@@ -75,10 +75,10 @@
         insertbefore: BOF
     - name: restart strongswan-starter
       shell: sudo systemctl restart strongswan-starter
-    - name: Allow OpenSSH
+    - name: Allow everything and enable UFW
       community.general.ufw:
-        rule: allow
-        name: OpenSSH
+        state: enabled
+        policy: allow
     - name: Allow port range 60000-61000
       community.general.ufw:
         rule: allow
