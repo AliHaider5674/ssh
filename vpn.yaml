@@ -77,9 +77,9 @@
       shell: sudo systemctl restart strongswan-starter
     - name: Configuring the Firewall & Kernel IP Forwarding
       shell: |
-        sudo ufw allow OpenSSH
-        sudo ufw enable
-        sudo ufw allow 500,4500/udp
+        ufw allow OpenSSH
+        ufw enable
+        ufw allow 500,4500/udp
     - name: Configuring before rules
       blockinfile:
         dest: /etc/ufw/before.rules
