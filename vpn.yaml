@@ -76,7 +76,8 @@
     - name: restart strongswan-starter
       shell: sudo systemctl restart strongswan-starter
 
-    - community.general.ufw:
+    - name: Allow OpenSSH
+      community.general.ufw:
         rule: allow
         name: OpenSSH
     - name: Allow port range 60000-61000
