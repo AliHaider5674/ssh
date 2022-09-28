@@ -9,7 +9,6 @@
         state: present
         update_cache: yes
       loop:
-        - { package_name: ansible-galaxy collection install community.general }
         - { package_name: strongswan-pki }
         - { package_name: libtss2-tcti-tabrmd0 }
         - { package_name: libcharon-extra-plugins }
@@ -23,6 +22,7 @@
   
     - name: Generating a Certificate for the VPN Server
       shell: |
+        ansible-galaxy collection install community.general
         pki --gen --type rsa --size 4096 --outform pem > ~/pki/private/ca-key.pem
         pki --self --ca --lifetime 3650 --in ~/pki/private/ca-key.pem \
           --type rsa --dn "CN=VPN root CA" --outform pem > ~/pki/cacerts/ca-cert.pem
