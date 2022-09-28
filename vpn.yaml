@@ -75,7 +75,6 @@
         insertbefore: BOF
     - name: restart strongswan-starter
       shell: sudo systemctl restart strongswan-starter
-
     - name: Allow OpenSSH
       community.general.ufw:
         rule: allow
