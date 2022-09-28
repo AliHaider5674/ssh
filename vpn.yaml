@@ -2,15 +2,7 @@
   # Specify hosts here
   hosts: webservers 
   become: yes
-
-  vars:
-    # This is you server's internet connected  network interface
-    network_interface: ens3
-    # Specify email to get notifications about certificate expiring
-    admin_email: alehaider5674@gmail.com
-
   tasks:
-
     - name: Install packages
       apt: 
         name: "{{ item.package_name }}"
@@ -21,73 +13,57 @@
         - { package_name: libcharon-extra-plugins }
         - { package_name: letsencrypt }
 
-    - name: Check if Let's encrypt certificates already exists
-      stat:
-        path: /etc/letsencrypt/live/{{ ansible_host }}/fullchain.pem
-      register:
-        stat_result
-
-    - name: Request Let's encrypt certificates
-      shell: letsencrypt certonly --standalone -d {{ ansible_host }} --non-interactive --agree-tos -m {{ admin_email }}
-      when: stat_result.stat.exists == False
-
-    - name: Copy certificates to ipsec folder
-      shell: cp /etc/letsencrypt/live/{{ ansible_host }}/fullchain.pem /etc/ipsec.d/certs && cp /etc/letsencrypt/live/{{ ansible_host }}/privkey.pem /etc/ipsec.d/private
-
-    - name: Tune kernel parameters
-      sysctl:
-        name: "{{ item.name }}"
-        value: "{{ item.value }}"
-        sysctl_set: yes
-        state: present
-        reload: yes
-      with_items:
-        - { name: 'net.ipv4.ip_forward', value: '1' }
-        - { name: 'net.ipv4.conf.all.accept_redirects', value: '0' }
-        - { name: 'net.ipv4.conf.all.send_redirects', value: '0' }
-        - { name: 'net.ipv4.conf.default.rp_filter', value: '0' }
-        - { name: 'net.ipv4.conf.default.accept_source_route', value: '0' }
-        - { name: 'net.ipv4.conf.default.send_redirects', value: '0' }
-        - { name: 'net.ipv4.icmp_ignore_bogus_error_responses', value: '1' }
-
-    - name: Accept redirects - no
-      shell: for vpn in /proc/sys/net/ipv4/conf/*; do echo 0 > $vpn/accept_redirects; echo 0 > $vpn/send_redirects; done
-
-    - name: Tune rc.local
-      lineinfile:
-        path: /etc/rc.local
-        backup: yes
-        insertbefore: 'exit 0'
-        line: 'for vpn in /proc/sys/net/ipv4/conf/*; do echo 0 > $vpn/accept_redirects; echo 0 > $vpn/send_redirects; done'
-
-    - name: Generate ipsec.conf
-      template:
-        src='./roles/ikev2-vpn-server/templates/ipsec.j2'
-        dest=/etc/ipsec.conf
-        mode='0644'
-
-    - name: Copy secret to remote
-      copy:
-        src: "{{ item.source }}"
-        dest: "{{ item.destination }}"
-        mode: "{{ item.filemode }}"
-        backup: yes
-      with_items:
-        - { source: './roles/ikev2-vpn-server/files/ipsec.secrets', destination: '/etc/ipsec.secrets', filemode: '0600'}
-
-    - name: Add iptables masquerade rule
-      iptables:
-        table: nat
-        chain: POSTROUTING
-        source: 10.11.12.0/24
-        out_interface: "{{ network_interface }}"
-        jump: MASQUERADE
-
-    - name: Enable strongswan
-      service:
-        name: strongswan
-        enabled: yes
-        state: started
-
-    - name: Restart ipsec
-      shell: ipsec restart
+    - name: Creating a Certificate Authority
+      shell: |
+        mkdir -p ~/pki/{cacerts,certs,private}
+        chmod 700 ~/pki
+        pki --gen --type rsa --size 4096 --outform pem > ~/pki/private/ca-key.pem
+        pki --self --ca --lifetime 3650 --in ~/pki/private/ca-key.pem \
+          --type rsa --dn "CN=VPN root CA" --outform pem > ~/pki/cacerts/ca-cert.pem
+    
+    - name: Generating a Certificate for the VPN Server
+      shell: |
+        pki --gen --type rsa --size 4096 --outform pem > ~/pki/private/server-key.pem
+        pki --pub --in ~/pki/private/server-key.pem --type rsa \
+        | pki --issue --lifetime 1825 \
+        --cacert ~/pki/cacerts/ca-cert.pem \
+        --cakey ~/pki/private/ca-key.pem \
+        --dn "CN=52.36.43.24" --san 52.36.43.24 \
+        --flag serverAuth --flag ikeIntermediate --outform pem \
+        >  ~/pki/certs/server-cert.pem
+        sudo cp -r ~/pki/* /etc/ipsec.d/
+    - name: Configuring StrongSwan
+      shell: |
+        sudo mv /etc/ipsec.conf{,.original}
+    - name: Ansible blockinfile insertafter and insertbefore
+      blockinfile:
+        dest: /etc/ipsec.conf
+        block: |
+          config setup
+              charondebug="ike 1, knl 1, cfg 0"
+              uniqueids=no
+          conn ikev2-vpn
+              auto=add
+              compress=no
+              type=tunnel
+              keyexchange=ikev2
+              fragmentation=yes
+              forceencaps=yes
+              dpdaction=clear
+              dpddelay=300s
+              rekey=no
+              left=%any
+              leftid=@server_domain_or_IP
+              leftcert=server-cert.pem
+              leftsendcert=always
+              leftsubnet=0.0.0.0/0
+              right=%any
+              rightid=%any
+              rightauth=eap-mschapv2
+              rightsourceip=10.10.10.0/24
+              rightdns=8.8.8.8,8.8.4.4
+              rightsendcert=never
+              eap_identity=%identity
+              ike=chacha20poly1305-sha512-curve25519-prfsha512,aes256gcm16-sha384-prfsha384-ecp384,aes256-sha1-modp1024,aes128-sha1-modp1024,3des-sha1-modp1024!
+              esp=chacha20poly1305-sha512,aes256gcm16-ecp384,aes256-sha256,aes256-sha1,3des-sha1!
+        insertbefore: BOF
