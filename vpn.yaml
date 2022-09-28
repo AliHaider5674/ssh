@@ -75,11 +75,20 @@
         insertbefore: BOF
     - name: restart strongswan-starter
       shell: sudo systemctl restart strongswan-starter
-    - name: Configuring the Firewall & Kernel IP Forwarding
-      shell: |
-        ufw allow OpenSSH
-        ufw enable
-        ufw allow 500,4500/udp
+
+    - community.general.ufw:
+        rule: allow
+        name: OpenSSH
+    - name: Allow port range 60000-61000
+      community.general.ufw:
+        rule: allow
+        port: 500,4500
+        proto: udp
+    # - name: Configuring the Firewall & Kernel IP Forwarding
+    #   shell: |
+    #     ufw allow OpenSSH
+    #     ufw enable
+    #     ufw allow 500,4500/udp
     - name: Configuring before rules
       blockinfile:
         dest: /etc/ufw/before.rules
