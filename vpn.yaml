@@ -4,7 +4,9 @@
   become: yes
   tasks:
     - name: Install packages
-      shell: sudo apt install strongswan strongswan-pki libcharon-extra-plugins libcharon-extauth-plugins libstrongswan-extra-plugins
+      shell: |
+        sudo apt update 
+        sudo apt install strongswan strongswan-pki libcharon-extra-plugins libcharon-extauth-plugins libstrongswan-extra-plugins
 
     - name: Creating a Certificate Authority
       shell: |
