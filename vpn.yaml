@@ -35,7 +35,7 @@
         sudo cp -r ~/pki/* /etc/ipsec.d/
     - name: Configuring StrongSwan
       shell: |
-        sudo mv /etc/ipsec.conf{,.original}
+        mv /etc/ipsec.conf{,.original}
     - name: Ansible blockinfile insertafter and insertbefore
       blockinfile:
         dest: /etc/ipsec.conf
