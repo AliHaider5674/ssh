@@ -23,16 +23,16 @@
 
     - name: Check if Let's encrypt certificates already exists
       stat:
-        path: /etc/letsencrypt/live/{{ ansible_host }}/fullchain.pem
+        path: /etc/letsencrypt/live/{{ ansible_user }}/fullchain.pem
       register:
         stat_result
 
     - name: Request Let's encrypt certificates
-      shell: letsencrypt certonly --standalone -d {{ ansible_host }} --non-interactive --agree-tos -m {{ admin_email }}
+      shell: letsencrypt certonly --standalone -d {{ ansible_user }} --non-interactive --agree-tos -m {{ admin_email }}
       when: stat_result.stat.exists == False
 
     - name: Copy certificates to ipsec folder
-      shell: cp /etc/letsencrypt/live/{{ ansible_host }}/fullchain.pem /etc/ipsec.d/certs && cp /etc/letsencrypt/live/{{ ansible_host }}/privkey.pem /etc/ipsec.d/private
+      shell: cp /etc/letsencrypt/live/{{ ansible_user }}/fullchain.pem /etc/ipsec.d/certs && cp /etc/letsencrypt/live/{{ ansible_host }}/privkey.pem /etc/ipsec.d/private
 
     - name: Tune kernel parameters
       sysctl:
