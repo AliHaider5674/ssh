@@ -34,7 +34,7 @@
         --flag serverAuth --flag ikeIntermediate --outform pem \
         >  ~/pki/certs/server-cert.pem
         sudo cp -r ~/pki/* /etc/ipsec.d/
-    - name: Ansible blockinfile insertafter and insertbefore
+    - name: Configuring StrongSwan
       blockinfile:
         dest: /etc/ipsec.conf
         block: |
@@ -66,3 +66,36 @@
               ike=chacha20poly1305-sha512-curve25519-prfsha512,aes256gcm16-sha384-prfsha384-ecp384,aes256-sha1-modp1024,aes128-sha1-modp1024,3des-sha1-modp1024!
               esp=chacha20poly1305-sha512,aes256gcm16-ecp384,aes256-sha256,aes256-sha1,3des-sha1!
         insertbefore: BOF
+    - name: Configuring VPN Authentication
+      blockinfile:
+        dest: /etc/ipsec.secrets
+        block: |
+          : RSA "server-key.pem"
+          ali069 : EAP "069lions"
+        insertbefore: BOF
+    - name: restart strongswan-starter
+      shell: sudo systemctl restart strongswan-starter
+    - name: Configuring the Firewall & Kernel IP Forwarding
+      shell: |
+        sudo ufw allow OpenSSH
+        sudo ufw enable
+        sudo ufw allow 500,4500/udp
+    - name: Configuring before rules
+      blockinfile:
+        dest: /etc/ufw/before.rules
+        block: |
+          *nat
+          -A POSTROUTING -s 10.10.10.0/24 -o eth0 -m policy --pol ipsec --dir out -j ACCEPT
+          -A POSTROUTING -s 10.10.10.0/24 -o eth0 -j MASQUERADE
+          COMMIT
+          *mangle
+          -A FORWARD --match policy --pol ipsec --dir in -s 10.10.10.0/24 -o eth0 -p tcp -m tcp --tcp-flags SYN,RST SYN -m tcpmss --mss 1361:1536 -j TCPMSS --set-mss 1360
+          COMMIT
+        insertbefore: "*filter"
+    # - name: Configuring before rules
+    #   blockinfile:
+    #     dest: /etc/ufw/before.rules
+    #     block: |
+    #       -A ufw-before-forward --match policy --pol ipsec --dir in --proto esp -s 10.10.10.0/24 -j ACCEPT
+    #       -A ufw-before-forward --match policy --pol ipsec --dir out --proto esp -d 10.10.10.0/24 -j ACCEPT
+    #     insertbefore: "*filter"
