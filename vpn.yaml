@@ -32,10 +32,10 @@
         --dn "CN=52.36.43.24" --san 52.36.43.24 \
         --flag serverAuth --flag ikeIntermediate --outform pem \
         >  ~/pki/certs/server-cert.pem
-        cp -r ~/pki/* /etc/ipsec.d/
+        
     - name: Configuring StrongSwan
       shell: |
-        mv /etc/ipsec.conf{,.original}
+        cp -r ~/pki/* /etc/ipsec.d/
     - name: Ansible blockinfile insertafter and insertbefore
       blockinfile:
         dest: /etc/ipsec.conf
