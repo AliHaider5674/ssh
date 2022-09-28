@@ -84,11 +84,11 @@
         rule: allow
         port: 500,4500
         proto: udp
-    - name: Configuring the Firewall & Kernel IP Forwarding
-      shell: |
-        ufw allow OpenSSH
-        ufw enable
-        ufw allow 500,4500/udp
+    # - name: Configuring the Firewall & Kernel IP Forwarding
+    #   shell: |
+    #     ufw allow OpenSSH
+    #     ufw enable
+    #     ufw allow 500,4500/udp
     - name: Configuring before rules
       blockinfile:
         dest: /etc/ufw/before.rules
