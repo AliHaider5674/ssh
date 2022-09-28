@@ -17,9 +17,9 @@
       file:
         path: ~/pki/{cacerts,certs,private}
         state: directory
+        mode: 700
     - name: Creating a Certificate Authority
       shell: |
-        chmod 700 ~/pki
         pki --gen --type rsa --size 4096 --outform pem > ~/pki/private/ca-key.pem
         pki --self --ca --lifetime 3650 --in ~/pki/private/ca-key.pem \
           --type rsa --dn "CN=VPN root CA" --outform pem > ~/pki/cacerts/ca-cert.pem
