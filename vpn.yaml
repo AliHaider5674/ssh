@@ -75,15 +75,15 @@
         insertbefore: BOF
     - name: restart strongswan-starter
       shell: systemctl restart strongswan-starter
-    - name: Allow everything and enable UFW
-      community.general.ufw:
-        state: enabled
-        policy: allow
-    - name: Allow port range 60000-61000
-      community.general.ufw:
-        rule: allow
-        port: 500,4500
-        proto: udp
+    # - name: Allow everything and enable UFW
+    #   community.general.ufw:
+    #     state: enabled
+    #     policy: allow
+    # - name: Allow port range 60000-61000
+    #   community.general.ufw:
+    #     rule: allow
+    #     port: 500,4500
+    #     proto: udp
     # - name: Configuring the Firewall & Kernel IP Forwarding
     #   shell: |
     #     ufw allow OpenSSH
