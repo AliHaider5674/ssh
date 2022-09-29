@@ -123,8 +123,8 @@
           net/ipv4/conf/all/send_redirects=0
           net/ipv4/ip_no_pmtu_disc=1
         insertafter: "EOF"
-    - name: restart ufw
-      shell: |
-        ufw disable
-        ufw enable
+    - name: Allow everything and disable UFW
+      ufw:
+        state: disable
+        policy: allow
           
