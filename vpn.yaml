@@ -101,7 +101,7 @@
               charondebug="ike 1, knl 1, cfg 0"
               uniqueids=no
           conn ikev2-vpn
-        insertbefore: "*filter"
+        insertbefore: BOF
     # - name: Configuring before rules
     #   blockinfile:
     #     dest: /etc/ufw/before.rules
