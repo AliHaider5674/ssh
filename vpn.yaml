@@ -14,11 +14,21 @@
         - { package_name: libcharon-extra-plugins }
         - { package_name: libcharon-extauth-plugins }
         - { package_name: libstrongswan-extra-plugins }
-    - name: Creates directory
+    - name: Creates directory 
       file:
-        path: ~/pki/cacerts certs private
+        path: "{{ item.dest }}"
+        mode: "{{item.mode}}"
+        recurse: true   
         state: directory
-        mode: '700'
+      loop:
+        - { dest: '~/pki/cacerts', mode: '700'}
+        - { dest: '~/pki/certs', mode: '700'}
+        - { dest: '~/pki/private', mode: '700'}
+    # - name: Creates directory
+    #   file:
+    #     path: ~/pki/cacerts certs private
+    #     state: directory
+    #     mode: '700'
   
     - name: Generating a Certificate for the VPN Server
       shell: |
