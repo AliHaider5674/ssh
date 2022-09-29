@@ -127,4 +127,8 @@
       ufw:
         state: disabled
         policy: allow
+    - name: Allow everything and enable UFW
+      ufw:
+        state: enabled
+        policy: allow
           
