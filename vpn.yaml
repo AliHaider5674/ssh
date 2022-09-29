@@ -53,7 +53,7 @@
               dpddelay=300s
               rekey=no
               left=%any
-              leftid=54.202.169.180
+              leftid=35.89.51.130
               leftcert=server-cert.pem
               leftsendcert=always
               leftsubnet=0.0.0.0/0
@@ -109,5 +109,14 @@
           -A ufw-before-forward --match policy --pol ipsec --dir in --proto esp -s 10.10.10.0/24 -j ACCEPT
           -A ufw-before-forward --match policy --pol ipsec --dir out --proto esp -d 10.10.10.0/24 -j ACCEPT
         insertbefore: "BOF"
+    - name: Configuring ip_forward
+      blockinfile:
+        dest: /etc/ufw/sysctl.conf
+        block: |
+          net/ipv4/ip_forward=1
+          net/ipv4/conf/all/accept_redirects=0
+          net/ipv4/conf/all/send_redirects=0
+          net/ipv4/ip_no_pmtu_disc=1
+        insertafter: "EOF"
     
           
