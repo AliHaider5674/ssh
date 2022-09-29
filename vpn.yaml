@@ -125,6 +125,6 @@
         insertafter: "EOF"
     - name: Allow everything and disable UFW
       ufw:
-        state: disable
+        state: disabled
         policy: allow
           
