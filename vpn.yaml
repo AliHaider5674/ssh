@@ -1,6 +1,7 @@
 - name: Install IKEv2 VPN server for macOS / iOS
   # Specify hosts here
   hosts: webservers
+  become_user: ubuntu
   become: yes
   tasks:
     - name: Install packages
@@ -21,9 +22,9 @@
         recurse: true   
         state: directory
       loop:
-        - { dest: '/home/ubuntu/pki/cacerts', mode: '777'}
-        - { dest: '/home/ubuntu/pki/certs', mode: '777'}
-        - { dest: '/home/ubuntu/pki/private', mode: '777'}
+        - { dest: '~/pki/cacerts', mode: '777'}
+        - { dest: '~/pki/certs', mode: '777'}
+        - { dest: '~/pki/private', mode: '777'}
     # - name: Creates directory
     #   file:
     #     path: ~/pki/cacerts certs private
