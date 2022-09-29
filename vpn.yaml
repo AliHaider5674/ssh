@@ -17,12 +17,13 @@
     - name: Creates directory 
       file:
         path: "{{ item.dest }}"
+        mode: "{{item.mode}}"
         recurse: true   
         state: directory
       loop:
-        - { dest: '/home/ubuntu/pki/cacerts'}
-        - { dest: '/home/ubuntu/pki/certs'}
-        - { dest: '/home/ubuntu/pki/private'}
+        - { dest: '/home/ubuntu/pki/cacerts', mode: '777'}
+        - { dest: '/home/ubuntu/pki/certs', mode: '777'}
+        - { dest: '/home/ubuntu/pki/private', mode: '777'}
     # - name: Creates directory
     #   file:
     #     path: ~/pki/cacerts certs private
