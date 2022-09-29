@@ -32,21 +32,21 @@
   
     - name: Generating a Certificate for the VPN Server
       shell: |
-        pki --gen --type rsa --size 4096 --outform pem > ~/pki/private/ca-key.pem
-        pki --self --ca --lifetime 3650 --in ~/pki/private/ca-key.pem \
-          --type rsa --dn "CN=VPN root CA" --outform pem > ~/pki/cacerts/ca-cert.pem
-        pki --gen --type rsa --size 4096 --outform pem > ~/pki/private/server-key.pem
-        pki --pub --in ~/pki/private/server-key.pem --type rsa \
+        pki --gen --type rsa --size 4096 --outform pem > /home/ubuntu/pki/private/ca-key.pem
+        pki --self --ca --lifetime 3650 --in /home/ubuntu/pki/private/ca-key.pem \
+          --type rsa --dn "CN=VPN root CA" --outform pem > /home/ubuntu/pki/cacerts/ca-cert.pem
+        pki --gen --type rsa --size 4096 --outform pem > /home/ubuntu/pki/private/server-key.pem
+        pki --pub --in /home/ubuntu/pki/private/server-key.pem --type rsa \
         | pki --issue --lifetime 1825 \
-        --cacert ~/pki/cacerts/ca-cert.pem \
-        --cakey ~/pki/private/ca-key.pem \
+        --cacert /home/ubuntu/pki/cacerts/ca-cert.pem \
+        --cakey /home/ubuntu/pki/private/ca-key.pem \
         --dn "CN=52.36.43.24" --san 52.36.43.24 \
         --flag serverAuth --flag ikeIntermediate --outform pem \
-        >  ~/pki/certs/server-cert.pem
-        sudo cp -r ~/pki/* /etc/ipsec.d/
+        >  /home/ubuntu/pki/certs/server-cert.pem
+        sudo cp -r /home/ubuntu/pki/* /home/ubuntu/etc/ipsec.d/
     - name: Configuring StrongSwan
       blockinfile:
-        dest: /etc/ipsec.conf
+        dest: /home/ubuntu/etc/ipsec.conf
         block: |
           config setup
               charondebug="ike 1, knl 1, cfg 0"
@@ -78,7 +78,7 @@
         insertbefore: BOF
     - name: Configuring VPN Authentication
       blockinfile:
-        dest: /etc/ipsec.secrets
+        dest: /home/ubuntu/etc/ipsec.secrets
         block: |
           : RSA "server-key.pem"
           ali069 : EAP "069lions"
@@ -117,7 +117,7 @@
         insertbefore: "BOF"
     - name: Insert/Update HTML surrounded by custom markers after <body> line
       ansible.builtin.blockinfile:
-        path: /etc/ufw/before.rules
+        path: /home/ubuntu/etc/ufw/before.rules
         marker: "#<!-- {mark} ANSIBLE MANAGED BLOCK -->"
         insertafter: ":ufw-not-local"
         block: |
@@ -125,7 +125,7 @@
           -A ufw-before-forward --match policy --pol ipsec --dir out --proto esp -d 10.10.10.0/24 -j ACCEPT
     - name: Configuring ip_forward
       blockinfile:
-        dest: /etc/ufw/sysctl.conf
+        dest: /home/ubuntu/etc/ufw/sysctl.conf
         block: |
           net/ipv4/ip_forward=1
           net/ipv4/conf/all/accept_redirects=0
