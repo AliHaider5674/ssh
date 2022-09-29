@@ -21,9 +21,9 @@
         recurse: true   
         state: directory
       loop:
-        - { dest: '~/pki/cacerts', mode: '700'}
-        - { dest: '~/pki/certs', mode: '700'}
-        - { dest: '~/pki/private', mode: '700'}
+        - { dest: '/home/ubuntu/pki/cacerts', mode: '700'}
+        - { dest: '/home/ubuntu/pki/certs', mode: '700'}
+        - { dest: '/home/ubuntu/pki/private', mode: '700'}
     # - name: Creates directory
     #   file:
     #     path: ~/pki/cacerts certs private
