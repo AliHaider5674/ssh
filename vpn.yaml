@@ -125,7 +125,6 @@
         insertafter: "EOF"
     - ufw:
         state: disable
-        policy: allow
     - ufw:
         state: enabled
         policy: allow
