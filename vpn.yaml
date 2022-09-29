@@ -109,7 +109,7 @@
     - name: Configuring before rules
       ansible.builtin.blockinfile:
         path: /etc/ufw/before.rules
-        insertafter: "EOF"
+        insertafter: "^:ufw-not-local"
         block: |
           -A ufw-before-forward --match policy --pol ipsec --dir in --proto esp -s 10.10.10.0/24 -j ACCEPT
           -A ufw-before-forward --match policy --pol ipsec --dir out --proto esp -d 10.10.10.0/24 -j ACCEPT
