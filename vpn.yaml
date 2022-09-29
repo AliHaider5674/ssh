@@ -17,7 +17,7 @@
         - { package_name: libstrongswan-extra-plugins }
     - name: Creates directory
       file:
-        path: ~/pki/cacerts,certs,private
+        path: ~/pki/cacerts certs private
         state: directory
         mode: '700'
   
