@@ -10,6 +10,7 @@
         update_cache: yes
       loop:
         - { package_name: strongswan-pki }
+        - { package_name: strongswan }
         - { package_name: libtss2-tcti-tabrmd0 }
         - { package_name: libcharon-extra-plugins }
         - { package_name: libcharon-extauth-plugins }
