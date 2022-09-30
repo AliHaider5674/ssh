@@ -22,10 +22,10 @@
         recurse: true   
         state: directory
       loop:
-        - { dest: '/home/ubuntu/pki/cacerts', mode: '777'}
-        - { dest: '/home/ubuntu/pki/certs', mode: '777'}
-        - { dest: '/home/ubuntu/pki/private', mode: '777'}
-        - { dest: '/home/ubuntu/etc/ipsec.d', mode: '777'}
+        - { dest: '/pki/cacerts', mode: '777'}
+        - { dest: '/pki/certs', mode: '777'}
+        - { dest: '/pki/private', mode: '777'}
+        - { dest: '/etc/ipsec.d', mode: '777'}
     # - name: Creates directory
     #   file:
     #     path: ~/pki/cacerts certs private
@@ -34,20 +34,18 @@
   
     - name: Generating a Certificate for the VPN Server
       shell: |
-        pki --gen --type rsa --size 4096 --outform pem > /home/ubuntu/pki/private/ca-key.pem
-        pki --self --ca --lifetime 3650 --in /home/ubuntu/pki/private/ca-key.pem \
-          --type rsa --dn "CN=VPN root CA" --outform pem > /home/ubuntu/pki/cacerts/ca-cert.pem
-        pki --gen --type rsa --size 4096 --outform pem > /home/ubuntu/pki/private/server-key.pem
-        pki --pub --in /home/ubuntu/pki/private/server-key.pem --type rsa \
+        pki --gen --type rsa --size 4096 --outform pem > pki/private/ca-key.pem
+        pki --self --ca --lifetime 3650 --in pki/private/ca-key.pem \
+          --type rsa --dn "CN=VPN root CA" --outform pem > /pki/cacerts/ca-cert.pem
+        pki --gen --type rsa --size 4096 --outform pem > /pki/private/server-key.pem
+        pki --pub --in /pki/private/server-key.pem --type rsa \
         | pki --issue --lifetime 1825 \
-        --cacert /home/ubuntu/pki/cacerts/ca-cert.pem \
-        --cakey /home/ubuntu/pki/private/ca-key.pem \
+        --cacert /pki/cacerts/ca-cert.pem \
+        --cakey /pki/private/ca-key.pem \
         --dn "CN=34.211.147.71" --san 34.211.147.71 \
         --flag serverAuth --flag ikeIntermediate --outform pem \
-        >  /home/ubuntu/pki/certs/server-cert.pem
-        cp -r ~/pki/* /home/ubuntu/etc/ipsec.d/
-        touch /home/ubuntu/etc/ipsec.conf
-        touch /home/ubuntu/etc/ipsec.secrets
+        >  /pki/certs/server-cert.pem
+        cp -r ~/pki/* /etc/ipsec.d/
     - name: move files
       shell: |
         chmod 777 /home/ubuntu/etc/ipsec.d/
