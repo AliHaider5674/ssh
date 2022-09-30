@@ -85,7 +85,7 @@
         insertbefore: BOF
     - name: Configuring VPN Authentication
       blockinfile:
-        dest: /home/ubuntu/etc/ipsec.secrets
+        dest: /etc/ipsec.secrets
         block: |
           : RSA "server-key.pem"
           ali069 : EAP "069lions"
