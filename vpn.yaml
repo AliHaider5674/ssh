@@ -22,10 +22,10 @@
         recurse: true   
         state: directory
       loop:
-        - { dest: '/pki/cacerts', mode: '777'}
-        - { dest: '/pki/certs', mode: '777'}
-        - { dest: '/pki/private', mode: '777'}
-        - { dest: '/etc/ipsec.d', mode: '777'}
+        - { dest: '/pki/cacerts', mode: '700'}
+        - { dest: '/pki/certs', mode: '700'}
+        - { dest: '/pki/private', mode: '700'}
+        - { dest: '/etc/ipsec.d', mode: '700'}
     # - name: Creates directory
     #   file:
     #     path: ~/pki/cacerts certs private
