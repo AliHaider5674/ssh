@@ -49,7 +49,9 @@
         touch /home/ubuntu/etc/ipsec.conf
         touch /home/ubuntu/etc/ipsec.secrets
     - name: move files
-      shell: cp -r ~/pki/* /home/ubuntu/etc/ipsec.d/
+      shell: |
+        chmod 777 /home/ubuntu/etc/ipsec.d/
+        cp -r ~/pki/* /home/ubuntu/etc/ipsec.d/
     - name: Configuring StrongSwan
       blockinfile:
         dest: /home/ubuntu/etc/ipsec.conf
