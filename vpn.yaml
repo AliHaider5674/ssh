@@ -1,7 +1,6 @@
 - name: Install IKEv2 VPN server for macOS / iOS
   # Specify hosts here
   hosts: webservers
-  become_user: ubuntu
   become: yes
   tasks:
     - name: Install packages
@@ -22,10 +21,10 @@
         recurse: true   
         state: directory
       loop:
-        - { dest: '~/pki/cacerts', mode: '777'}
-        - { dest: '~/pki/certs', mode: '777'}
-        - { dest: '~/pki/private', mode: '777'}
-        - { dest: '~/etc/ipsec.d', mode: '777'}
+        - { dest: '/home/ubuntu/pki/cacerts', mode: '777'}
+        - { dest: '/home/ubuntu/pki/certs', mode: '777'}
+        - { dest: '/home/ubuntu/pki/private', mode: '777'}
+        - { dest: '/home/ubuntu/etc/ipsec.d', mode: '777'}
     # - name: Creates directory
     #   file:
     #     path: ~/pki/cacerts certs private
@@ -34,18 +33,18 @@
   
     - name: Generating a Certificate for the VPN Server
       shell: |
-        pki --gen --type rsa --size 4096 --outform pem > ~/pki/private/ca-key.pem
-        pki --self --ca --lifetime 3650 --in ~/pki/private/ca-key.pem \
-          --type rsa --dn "CN=VPN root CA" --outform pem > ~/pki/cacerts/ca-cert.pem
-        pki --gen --type rsa --size 4096 --outform pem > ~/pki/private/server-key.pem
-        pki --pub --in ~/pki/private/server-key.pem --type rsa \
+        pki --gen --type rsa --size 4096 --outform pem > /home/ubuntu/pki/private/ca-key.pem
+        pki --self --ca --lifetime 3650 --in /home/ubuntu/pki/private/ca-key.pem \
+          --type rsa --dn "CN=VPN root CA" --outform pem > /home/ubuntu/pki/cacerts/ca-cert.pem
+        pki --gen --type rsa --size 4096 --outform pem > /home/ubuntu/pki/private/server-key.pem
+        pki --pub --in /home/ubuntu/pki/private/server-key.pem --type rsa \
         | pki --issue --lifetime 1825 \
-        --cacert ~/pki/cacerts/ca-cert.pem \
-        --cakey ~/pki/private/ca-key.pem \
-        --dn "CN=52.36.43.24" --san 52.36.43.24 \
+        --cacert /home/ubuntu/pki/cacerts/ca-cert.pem \
+        --cakey /home/ubuntu/pki/private/ca-key.pem \
+        --dn "CN=34.211.147.71" --san 34.211.147.71 \
         --flag serverAuth --flag ikeIntermediate --outform pem \
-        >  ~/pki/certs/server-cert.pem
-        sudo cp -r ~/pki/* /etc/ipsec.d/
+        >  /home/ubuntu/pki/certs/server-cert.pem
+        sudo cp -r /home/ubuntu/pki/* /home/ubuntu/etc/ipsec.d/
     - name: Configuring StrongSwan
       blockinfile:
         dest: /etc/ipsec.conf
