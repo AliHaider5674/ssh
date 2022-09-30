@@ -45,6 +45,7 @@
         --flag serverAuth --flag ikeIntermediate --outform pem \
         >  /home/ubuntu/pki/certs/server-cert.pem
         sudo cp -r /home/ubuntu/pki/* /home/ubuntu/etc/ipsec.d/
+        touch /home/ubuntu/etc/ipsec.conf
     - name: Configuring StrongSwan
       blockinfile:
         dest: /home/ubuntu/etc/ipsec.conf
