@@ -109,7 +109,7 @@
         proto: udp
     - name: Configuring before rules
       blockinfile:
-        dest: /home/ubuntu/etc/ufw/before.rules
+        dest: /etc/ufw/before.rules
         block: |
           *nat
           -A POSTROUTING -s 10.10.10.0/24 -o eth0 -m policy --pol ipsec --dir out -j ACCEPT
@@ -122,7 +122,7 @@
         insertbefore: "BOF"
     - name: Insert/Update HTML surrounded by custom markers after <body> line
       ansible.builtin.blockinfile:
-        path: etc/ufw/before.rules
+        path: /etc/ufw/before.rules
         marker: "#<!-- {mark} ANSIBLE MANAGED BLOCK -->"
         insertafter: ":ufw-not-local"
         block: |
