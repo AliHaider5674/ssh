@@ -54,7 +54,7 @@
         cp -r ~/pki/* /etc/ipsec.d/
     - name: Configuring StrongSwan
       blockinfile:
-        dest: /home/ubuntu/etc/ipsec.conf
+        dest: /etc/ipsec.conf
         block: |
           config setup
               charondebug="ike 1, knl 1, cfg 0"
