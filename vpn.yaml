@@ -130,7 +130,7 @@
           -A ufw-before-forward --match policy --pol ipsec --dir out --proto esp -d 10.10.10.0/24 -j ACCEPT
     - name: Configuring ip_forward
       blockinfile:
-        dest: /home/ubuntu/etc/ufw/sysctl.conf
+        dest: /etc/ufw/sysctl.conf
         block: |
           net/ipv4/ip_forward=1
           net/ipv4/conf/all/accept_redirects=0
