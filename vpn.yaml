@@ -122,7 +122,7 @@
         insertbefore: "BOF"
     - name: Insert/Update HTML surrounded by custom markers after <body> line
       ansible.builtin.blockinfile:
-        path: /home/ubuntu/etc/ufw/before.rules
+        path: etc/ufw/before.rules
         marker: "#<!-- {mark} ANSIBLE MANAGED BLOCK -->"
         insertafter: ":ufw-not-local"
         block: |
