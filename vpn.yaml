@@ -1,7 +1,7 @@
 - name: Install IKEv2 VPN server for macOS / iOS
   # Specify hosts here
   hosts: webservers
-  become: yes
+  become_user: ubuntu
   tasks:
     - name: Install packages
       apt: 
