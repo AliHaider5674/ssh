@@ -1,7 +1,6 @@
 - name: Install IKEv2 VPN server for macOS / iOS
   # Specify hosts here
   hosts: webservers
-  remote_user: ubuntu
   become_user: ubuntu
   become: yes
   tasks:
@@ -54,7 +53,7 @@
           config setup
               charondebug="ike 1, knl 1, cfg 0"
               uniqueids=no
-              
+
           conn ikev2-vpn
               auto=add
               compress=no
