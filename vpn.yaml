@@ -45,7 +45,7 @@
         --dn "CN=34.211.147.71" --san 34.211.147.71 \
         --flag serverAuth --flag ikeIntermediate --outform pem \
         >  /home/ubuntu/pki/certs/server-cert.pem
-        sudo cp -r ~/pki/* /home/ubuntu/etc/ipsec.d/
+        cp -r ~/pki/* /home/ubuntu/etc/ipsec.d/
         touch /home/ubuntu/etc/ipsec.conf
         touch /home/ubuntu/etc/ipsec.secrets
     - name: Configuring StrongSwan
