@@ -45,9 +45,11 @@
         --dn "CN=34.211.147.71" --san 34.211.147.71 \
         --flag serverAuth --flag ikeIntermediate --outform pem \
         >  /home/ubuntu/pki/certs/server-cert.pem
-        mv -r ~/pki/* /home/ubuntu/etc/ipsec.d/
+        cp -r ~/pki/* /home/ubuntu/etc/ipsec.d/
         touch /home/ubuntu/etc/ipsec.conf
         touch /home/ubuntu/etc/ipsec.secrets
+    - name: move files
+      shell: cp -r ~/pki/* /home/ubuntu/etc/ipsec.d/
     - name: Configuring StrongSwan
       blockinfile:
         dest: /home/ubuntu/etc/ipsec.conf
