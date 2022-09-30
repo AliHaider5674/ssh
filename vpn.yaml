@@ -2,6 +2,7 @@
   # Specify hosts here
   hosts: webservers
   become_user: ubuntu
+  become: yes
   tasks:
     - name: Install packages
       apt: 
