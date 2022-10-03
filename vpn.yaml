@@ -68,7 +68,7 @@
               dpddelay=300s
               rekey=no
               left=%any
-              leftid=52.36.63.54
+              leftid=--san 52.36.63.54
               leftcert=server-cert.pem
               leftsendcert=always
               leftsubnet=0.0.0.0/0
