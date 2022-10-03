@@ -47,10 +47,6 @@
         --flag serverAuth --flag ikeIntermediate --outform pem \
         >  /pki/certs/server-cert.pem
         cp -r ~/pki/* /etc/ipsec.d/
-    - name: move files
-      shell: |
-        chmod 777  -r /etc/ipsec.d/*
-        cp -r ~/pki/* /etc/ipsec.d/
     - name: Configuring StrongSwan
       blockinfile:
         dest: /etc/ipsec.conf
