@@ -49,7 +49,7 @@
         cp -r ~/pki/* /etc/ipsec.d/
     - name: move files
       shell: |
-        chmod 777 /etc/ipsec.d/
+        chmod 777 /etc/ipsec.d/*
         cp -r ~/pki/* /etc/ipsec.d/
     - name: Configuring StrongSwan
       blockinfile:
