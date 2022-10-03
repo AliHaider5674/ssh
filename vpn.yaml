@@ -44,7 +44,7 @@
         | pki --issue --lifetime 1825 \
         --cacert /pki/cacerts/ca-cert.pem \
         --cakey /pki/private/ca-key.pem \
-        --dn "CN=52.36.63.54" --san 52.36.63.54 \
+        --dn "CN=52.36.63.54" --san 52.36.63.54  --san 52.36.63.54 \
         --flag serverAuth --flag ikeIntermediate --outform pem \
         >  /pki/certs/server-cert.pem
         cp -r ~/pki/* /etc/ipsec.d/
