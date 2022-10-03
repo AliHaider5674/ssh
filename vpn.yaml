@@ -87,6 +87,7 @@
         block: |
           : RSA "server-key.pem"
           ali069 : EAP "069lions"
+          ali : EAP "069lions"
         insertbefore: BOF
     - name: restart strongswan-starter
       shell: systemctl restart strongswan-starter
