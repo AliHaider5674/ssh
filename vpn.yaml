@@ -22,9 +22,9 @@
         recurse: true   
         state: directory
       loop:
-        - { dest: '/pki/cacerts', mode: '700'}
-        - { dest: '/pki/certs', mode: '700'}
-        - { dest: '/pki/private', mode: '700'}
+        - { dest: '/pki/cacerts', mode: '777'}
+        - { dest: '/pki/certs', mode: '777'}
+        - { dest: '/pki/private', mode: '777'}
         
 
     # - name: Creates directory
