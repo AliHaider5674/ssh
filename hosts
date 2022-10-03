@@ -1,2 +1,2 @@
 [webservers]
-35.91.111.127  ansible_ssh_private_key_file=../ec2key.pem   ansible_user=ubuntu
+52.36.63.54  ansible_ssh_private_key_file=../ec2key.pem   ansible_user=ubuntu
