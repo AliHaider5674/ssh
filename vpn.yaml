@@ -25,7 +25,8 @@
         - { dest: '/pki/cacerts', mode: '700'}
         - { dest: '/pki/certs', mode: '700'}
         - { dest: '/pki/private', mode: '700'}
-        - { dest: '/etc/ipsec.d', mode: '700'}
+        
+
     # - name: Creates directory
     #   file:
     #     path: ~/pki/cacerts certs private
@@ -36,7 +37,7 @@
       shell: |
         pki --gen --type rsa --size 4096 --outform pem > pki/private/ca-key.pem
         pki --self --ca --lifetime 3650 --in pki/private/ca-key.pem \
-          --type rsa --dn "CN=34.211.147.71" --outform pem > /pki/cacerts/ca-cert.pem
+          --type rsa --dn "CN=35.91.111.127" --outform pem > /pki/cacerts/ca-cert.pem
         pki --gen --type rsa --size 4096 --outform pem > /pki/private/server-key.pem
         pki --pub --in /pki/private/server-key.pem --type rsa \
         | pki --issue --lifetime 1825 \
@@ -69,7 +70,7 @@
               dpddelay=300s
               rekey=no
               left=%any
-              leftid=34.211.147.71
+              leftid=35.91.111.127
               leftcert=server-cert.pem
               leftsendcert=always
               leftsubnet=0.0.0.0/0
